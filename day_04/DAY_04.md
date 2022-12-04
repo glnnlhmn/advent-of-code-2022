@@ -4,7 +4,8 @@ However, as some of the Elves compare their section assignments with each other,
 
 For example, consider the following list of section assignment pairs:
 
-```2-4,6-8
+```
+2-4,6-8
 2-3,4-5
 5-7,7-9
 2-8,3-7

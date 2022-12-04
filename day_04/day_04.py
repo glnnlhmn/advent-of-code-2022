@@ -26,14 +26,11 @@ def solve_part_1(df) -> int:
     return df['Duplicates'].sum()
 
 def solve_part_2(df):
-    df['Overlap'] = np.logical_or(np.logical_or(np.logical_and(df['Elf_2_Start'] >= df['Elf_1_Start'],
-                                                               df['Elf_2_Start'] <= df['Elf_1_Stop']),
-                                                np.logical_and(df['Elf_2_Stop'] >= df['Elf_1_Start'],
-                                                               df['Elf_2_Stop'] <= df['Elf_1_Stop'])),
-                                  np.logical_or(np.logical_and(df['Elf_1_Start'] >= df['Elf_2_Start'],
-                                                               df['Elf_1_Start'] <= df['Elf_2_Stop']),
-                                                np.logical_and(df['Elf_1_Stop'] >= df['Elf_2_Start'],
-                                                               df['Elf_1_Stop'] <= df['Elf_2_Stop'])))
+
+    df['Overlap'] = np.logical_or(np.logical_or(df['Elf_2_Start'].between(df['Elf_1_Start'], df['Elf_1_Stop']),
+                                                df['Elf_2_Stop'].between(df['Elf_1_Start'], df['Elf_1_Stop'])),
+                                  np.logical_or(df['Elf_1_Start'].between(df['Elf_2_Start'], df['Elf_2_Stop']),
+                                                df['Elf_1_Stop'].between(df['Elf_2_Start'], df['Elf_2_Stop'])))
     return df['Overlap'].sum()
 
 
