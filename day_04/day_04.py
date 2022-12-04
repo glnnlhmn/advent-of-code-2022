@@ -1,5 +1,10 @@
+# Advent of Code 2022
+# Day 04: Camp Cleanup
+
 import pandas as pd
 import numpy as np
+
+
 def read_data(filename):
     df = pd.read_csv(filename, sep=',', header=None)
     df.columns = ['Elf1', 'Elf2']
@@ -15,12 +20,12 @@ def shape_df(df):
 
     return df
 
-def evaluate_df_part1(df):
-    df['Overlap'] = np.where(((df['Elf_1_Start'] >= df['Elf_2_Start']) & (df['Elf_1_Stop'] <= df['Elf_2_Stop'])) |
+def solve_part_1(df) -> int:
+    df['Duplicates'] = np.where(((df['Elf_1_Start'] >= df['Elf_2_Start']) & (df['Elf_1_Stop'] <= df['Elf_2_Stop'])) |
                              ((df['Elf_2_Start'] >= df['Elf_1_Start']) & (df['Elf_2_Stop'] <= df['Elf_1_Stop'])), 1, 0)
-    return df
+    return df['Duplicates'].sum()
 
-def evaluate_df_part2(df):
+def solve_part_2(df):
     df['Overlap'] = np.logical_or(np.logical_or(np.logical_and(df['Elf_2_Start'] >= df['Elf_1_Start'],
                                                                df['Elf_2_Start'] <= df['Elf_1_Stop']),
                                                 np.logical_and(df['Elf_2_Stop'] >= df['Elf_1_Start'],
@@ -29,17 +34,23 @@ def evaluate_df_part2(df):
                                                                df['Elf_1_Start'] <= df['Elf_2_Stop']),
                                                 np.logical_and(df['Elf_1_Stop'] >= df['Elf_2_Start'],
                                                                df['Elf_1_Stop'] <= df['Elf_2_Stop'])))
-    return df
-def main():
-    df = shape_df(read_data('input.txt'))
-    df_part1 = evaluate_df_part1(df)
-    print(f'Part 1: {df_part1["Overlap"].sum()}')
+    return df['Overlap'].sum()
 
-    df_part2 = evaluate_df_part2(df)
-    print(f'Part 2: {df_part2["Overlap"].sum()}')
+
+def solution(filename) -> int:
+    """Help the elves reduce duplication of cleanup efforts."""
+
+    # modification to structure inspired by Laura Twardy
+    # process data from filename to make it usable by our solving functions
+    df = shape_df(read_data('input.txt'))
+
+    duplicates = solve_part_1(df)
+    print(f"{duplicates} elves have completely redundant chore assignments.")
+
+    overlaps = solve_part_2(df)
+    print(f"{overlaps} pairs of chore assignments contain some duplicated work.")
 
 if __name__ == '__main__':
-
-    main()
+    solution('input.txt')
 
 
