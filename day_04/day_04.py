@@ -9,7 +9,10 @@ def shape_df(df):
     df_elf1 = pd.DataFrame(df.Elf1.str.split("-").to_list(), columns=["Elf_1_Start", "Elf_1_Stop"])
     df_elf2 = pd.DataFrame(df.Elf2.str.split("-").to_list(), columns=["Elf_2_Start", "Elf_2_Stop"])
     df = pd.concat([df_elf1, df_elf2], axis=1)
-    df = df.apply(pd.to_numeric)
+    # Improvement suggested by Michael Aydinbas
+    # df = df.apply(pd.to_numeric)
+    df = df.astype(int)
+
     return df
 
 def evaluate_df_part1(df):
